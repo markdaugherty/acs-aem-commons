@@ -17,9 +17,6 @@
  */
 package com.adobe.acs.commons.marketo.client.impl;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -28,14 +25,16 @@ import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicRequestLine;
 
-import org.apache.http.ProtocolVersion;
-
 import com.adobe.acs.commons.marketo.client.MarketoApiException;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StaticResponseMarketoClient extends MarketoClientImpl {
 
@@ -54,7 +53,8 @@ public class StaticResponseMarketoClient extends MarketoClientImpl {
     }
 
     @Override
-    protected <T> @Nonnull T getApiResponse(@Nonnull String url, String bearerToken,
+    @Nonnull
+    protected <T> T getApiResponse(@Nonnull String url, String bearerToken,
             BiFunction<HttpGet, HttpResponse, ParsedResponse<T>> callback)
             throws MarketoApiException {
         InputStream is = StaticResponseMarketoClient.class.getResourceAsStream(resourcePath);

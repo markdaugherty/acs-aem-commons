@@ -46,6 +46,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.util.EntityUtils;
 import org.apache.poi.util.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -154,7 +155,8 @@ public class MarketoClientImpl implements MarketoClient {
         return clientBuilder.build();
     }
 
-    protected <T> @Nonnull T getApiResponse(@Nonnull String url, String bearerToken,
+    @Nonnull
+    protected <T> T getApiResponse(@Nonnull String url, String bearerToken,
             BiFunction<HttpGet, HttpResponse, ParsedResponse<T>> callback)
             throws MarketoApiException {
         CloseableHttpClient client = null;
@@ -187,7 +189,9 @@ public class MarketoClientImpl implements MarketoClient {
         }
     }
 
-    public @Nonnull String getApiToken(@Nonnull MarketoClientConfiguration config) throws MarketoApiException {
+    @Nonnull
+    @Override
+    public String getApiToken(@Nonnull MarketoClientConfiguration config) throws MarketoApiException {
         log.trace("getApiToken");
         String url = String.format(
                 "https://%s/identity/oauth/token?grant_type=client_credentials&client_id=%s&client_secret=%s",
@@ -206,6 +210,7 @@ public class MarketoClientImpl implements MarketoClient {
     }
 
     @Override
+    @NotNull
     public List<MarketoField> getFields(MarketoClientConfiguration config) throws MarketoApiException {
         String apiToken = getApiToken(config);
         List<MarketoField> fields = new ArrayList<>();
@@ -253,6 +258,7 @@ public class MarketoClientImpl implements MarketoClient {
     }
 
     @Override
+    @Nonnull
     public List<MarketoForm> getForms(@Nonnull MarketoClientConfiguration config) throws MarketoApiException {
         String apiToken = getApiToken(config);
         List<MarketoForm> forms = new ArrayList<>();
